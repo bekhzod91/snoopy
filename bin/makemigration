@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+echo "Make migration..."
+export FLASK_APP=snoopy.core
+flask db migrate

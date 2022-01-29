@@ -1,0 +1,16 @@
+# Admin
+- model: auth.User
+  pk: "4b311f8a-dd7e-4470-a0a8-5f4239a5bd41"
+  fields:
+    username: root
+    password: $pbkdf2-sha256$29000$KSVEKEWoFcJYKyXkHKNUCg$dvecw4ZsCYFNGcbvdlXlyflh0xE5RR6aqaw0YtQyUn8
+
+# Admin Token
+- model: auth.Session
+  pk: "HgJKMo5hRkh5R-tlBqfI0yz5nbETKBrbtc67F7mB"
+  fields:
+    user_guid: "4b311f8a-dd7e-4470-a0a8-5f4239a5bd41"
+    device: "Chrome"
+    ip_address: "127.0.0.1"
+    last_activity: "2022-01-01 00:00:00"
+    created_at: "2022-01-01 00:00:00"

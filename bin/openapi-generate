@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+echo "Running..."
+
+export FLASK_APP=snoopy.core
+flask openapi generate
+datamodel-codegen --input swagger.json --output schemas.py

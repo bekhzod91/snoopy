@@ -1,0 +1,68 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: Snoopy API
+  description: |
+    This is a sample Petstore server.  You can find
+    out more about Swagger at
+    [http://swagger.io](http://swagger.io) or on
+    [irc.freenode.net, #swagger](http://swagger.io/irc/).
+  contact:
+    email: bekhzod.tillakhanov@gmail.com
+paths:
+  /api/v1/sign-in/:
+    post:
+      summary: Create new token for authorization.
+      tags:
+        - Authentication
+      operationId: createToken
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/SignInResponseDTO.yaml"
+        "400":
+          description: Fail
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/ErrorDTO.yaml"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "schemas/SignInRequestDTO.yaml"
+  /api/v1/sign-out/:
+    post:
+      summary: Destroy authorization token.
+      tags:
+        - Authentication
+      operationId: destoryToken
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/SignOutResponseDTO.yaml"
+        "400":
+          description: Fail
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/ErrorDTO.yaml"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "schemas/SignOutRequestDTO.yaml"
+components:
+  securitySchemes:
+    Token:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - Token: []

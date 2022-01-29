@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+echo "Testing..."
+
+if [ -n "$1" ]
+then
+  echo "Running test $(pwd)/$1"
+  pytest -m "$1"
+else
+  echo "Running all tests..."
+  pytest
+fi

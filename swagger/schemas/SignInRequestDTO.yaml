@@ -1,0 +1,14 @@
+title: SignInRequestDTO
+type: object
+properties:
+  username:
+    type: string
+    example: "admin"
+    description: The person's username.
+  password:
+    type: string
+    example: "Test1234"
+    description: The person's password.
+required:
+- username
+- password

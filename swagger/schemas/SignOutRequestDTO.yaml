@@ -1,0 +1,8 @@
+title: SignOutRequestDTO
+type: object
+properties:
+  token:
+    type: string
+    description: Authrization token.
+required:
+- token

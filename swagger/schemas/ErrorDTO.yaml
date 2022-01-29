@@ -1,0 +1,12 @@
+title: ErrorDTO
+type: object
+properties:
+  code:
+    type: string
+    description: The person's username.
+  message:
+    type: string
+    description: The person's password.
+required:
+- code
+- message

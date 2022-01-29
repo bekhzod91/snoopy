@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+echo "Running..."
+
+export FLASK_APP=snoopy.core
+flask run

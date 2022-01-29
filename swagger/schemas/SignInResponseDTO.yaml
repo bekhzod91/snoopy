@@ -1,0 +1,8 @@
+title: SignInResponseDTO
+type: object
+properties:
+  token:
+    type: string
+    description: Authorization token.
+required:
+- token
