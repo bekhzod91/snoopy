@@ -10,15 +10,15 @@ class Session(db.Model):
     __tablename__ = 'auth_session'
 
     token = db.Column(db.String(length=255), unique=True, primary_key=True)
-    user_guid = db.Column(UUID, db.ForeignKey('auth_user.guid'), nullable=False)
-    user = db.relationship('User', backref=db.backref('posts', lazy=True))
+    user_guid = db.Column(UUID, db.ForeignKey("auth_user.guid"), nullable=False)
+    user = db.relationship("User", backref=db.backref("auth_user", lazy=True))
     device = db.Column(db.String(length=1000), nullable=False)
     ip_address = db.Column(db.String(length=255), nullable=False)
     last_activity = db.Column(db.DateTime(), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False)
 
     def __repr__(self):
-        return f'<Session {self.token}>'
+        return f"<Session {self.token}>"
 
     @staticmethod
     def get_session_by_token(token: str) -> typing.Optional["Session"]:
@@ -28,8 +28,6 @@ class Session(db.Model):
         except NoResultFound:
             return None
 
-    def update_last_active(self, ip_address):
+    def set_last_active(self, ip_address):
         self.ip_address = ip_address
         self.last_activity = datetime.datetime.utcnow()
-
-        db.session.add(self)

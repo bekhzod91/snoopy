@@ -1,8 +1,10 @@
 import typing
 from flask import request, g
 
+from snoopy.core import db
+from snoopy.core.exceptions import Unauthorized
 from .models.session import Session
-from .exceptions import InvalidToken, InvalidTokenType, Unauthorized
+from .exceptions import InvalidToken, InvalidTokenType
 
 
 def check_authorization(authorization: str, remote_addr: str) -> "Session":
@@ -15,10 +17,12 @@ def check_authorization(authorization: str, remote_addr: str) -> "Session":
         raise InvalidTokenType
 
     session = Session.get_session_by_token(token)
-    session.update_last_active(remote_addr)
 
     if not session:
         raise Unauthorized
+
+    session.set_last_active(remote_addr)
+    db.session.commit()
 
     return session
 

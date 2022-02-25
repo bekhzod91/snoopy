@@ -1,6 +1,8 @@
+from snoopy.core import db
+
 from ..models.session import Session
 
-from schemes import SignOutRequestDTO
+from schemas import SignOutRequestDTO, SignOutResponseDTO
 
 
 class SignOutService(object):
@@ -10,6 +12,9 @@ class SignOutService(object):
     @staticmethod
     def delete_session(token: str):
         Session.query.filter_by(token=token).delete()
+        db.session.commit()
 
-    def execute(self):
+    def execute(self) -> "SignOutResponseDTO":
         SignOutService.delete_session(self.data.token)
+
+        return SignOutResponseDTO()

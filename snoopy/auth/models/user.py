@@ -5,15 +5,17 @@ from ..utils.security import check_password, make_password
 
 
 class User(db.Model):
-    __tablename__ = 'auth_user'
+    __tablename__ = "auth_user"
 
     guid = db.Column(UUID(), primary_key=True)
     username = db.Column(db.String(length=255), nullable=False)
     password = db.Column(db.String(length=255), nullable=False)
     is_active = db.Column(db.Boolean, default=True)
+    forgot_password_token = db.Column(db.String(length=255), nullable=True, unique=True)
+    forgot_password_expire = db.Column(db.DateTime, nullable=True)
 
     def __repr__(self):
-        return f'<User {self.username}>'
+        return f"<User {self.username}>"
 
     def password_verify(self, password):
         return check_password(password, self.password)

@@ -5,8 +5,13 @@ from flask.blueprints import Blueprint
 from snoopy.auth import is_authenticated
 from snoopy.auth.services.sign_in import SignInService
 from snoopy.auth.services.sign_out import SignOutService
+from snoopy.auth.services.forgot_password import ForgotPasswordService
+from snoopy.auth.services.forgot_password_confirm import ForgotPasswordConfirmService
 
-from schemes import SignInRequestDTO, SignOutRequestDTO
+from schemas import (
+    SignInRequestDTO, SignOutRequestDTO,
+    ForgotPasswordRequestDTO, ForgotPasswordConfirmRequestDTO
+)
 
 
 auth_blueprint = Blueprint('auth', __name__, url_prefix="/api/v1/auth/")
@@ -33,6 +38,29 @@ def sing_out():
     req_dto = SignOutRequestDTO(token=g.session.token)
 
     SignOutService(req_dto).execute()
+
+    return Response(
+        status=HTTPStatus.NO_CONTENT,
+        content_type="application/json"
+    )
+
+
+@auth_blueprint.post("/forgot-password/")
+def forgot_password():
+    req_dto = ForgotPasswordRequestDTO(**request.json)
+
+    ForgotPasswordService(req_dto).execute()
+
+    return Response(
+        status=HTTPStatus.NO_CONTENT,
+        content_type="application/json"
+    )
+
+
+@auth_blueprint.post("/forgot-password/confirm/")
+def forgot_password_confirm():
+    req_dto = ForgotPasswordConfirmRequestDTO(**request.json)
+    ForgotPasswordConfirmService(req_dto).execute()
 
     return Response(
         status=HTTPStatus.NO_CONTENT,

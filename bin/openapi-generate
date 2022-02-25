@@ -3,5 +3,5 @@
 echo "Running..."
 
 export FLASK_APP=snoopy.core
-flask openapi generate
+flask openapi make-swagger
 datamodel-codegen --input swagger.json --output schemas.py

@@ -3,11 +3,13 @@ import json
 from http import HTTPStatus
 from sqlalchemy import MetaData
 from flask import Flask, Response
+from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from pydantic import ValidationError
 
 from .exceptions import SnoopyException
+from .exceptions import Unauthorized
 
 convention = {
     "ix": 'ix_%(column_0_label)s',
@@ -21,9 +23,11 @@ metadata = MetaData(naming_convention=convention)
 db = SQLAlchemy(metadata=metadata)
 migrate = Migrate()
 
+mail = Mail()
+
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="../../templates/")
 
     # ENVIRONMENT CONFIGURATION
     env = os.environ.get("ENV", "config.development")
@@ -32,6 +36,9 @@ def create_app():
     # SQLALCHEMY CONFIGURATION
     db.init_app(app)
     migrate.init_app(app, db)
+
+    # MAIL CONFIGURATION
+    mail.init_app(app)
 
     # REGISTER BLUEPRINT
     from snoopy.api import root_blueprint
@@ -42,6 +49,17 @@ def create_app():
 
     from snoopy.core.openapi import openapi_blueprint
     app.register_blueprint(openapi_blueprint)
+
+    @app.errorhandler(Unauthorized)
+    def handle_snoopy_exception(e):
+        response = Response()
+        response.status_code = HTTPStatus.UNAUTHORIZED
+        response.data = json.dumps({
+            "code": e.code,
+            "message": e.message
+        })
+        response.content_type = "application/json"
+        return response
 
     @app.errorhandler(SnoopyException)
     def handle_snoopy_exception(e):
@@ -60,7 +78,7 @@ def create_app():
         response.status_code = HTTPStatus.BAD_REQUEST
         response.data = json.dumps({
             "code": "validation_error",
-            "message": "Validation error. Check your entry data!",
+            "message": "Validation error. Check your detail!",
             "errors": e.errors()
         })
         response.content_type = "application/json"

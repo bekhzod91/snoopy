@@ -36,6 +36,8 @@ and others, this project should solve many of these problems
 
 0.5.0 Auto generate template for new project
 
+0.6.0 Support graphql
+
 ### Get started!
 
 ```

@@ -2,6 +2,7 @@
 
 echo "Testing..."
 
+export ENV=config.testing
 if [ -n "$1" ]
 then
   echo "Running test $(pwd)/$1"

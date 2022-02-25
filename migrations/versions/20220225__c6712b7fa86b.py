@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 4b876ae254e0
+Revision ID: c6712b7fa86b
 Revises: 
-Create Date: 2021-12-24 17:01:00.705118
+Create Date: 2022-02-25 15:28:48.431743
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '4b876ae254e0'
+revision = 'c6712b7fa86b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,7 +23,10 @@ def upgrade():
     sa.Column('username', sa.String(length=255), nullable=False),
     sa.Column('password', sa.String(length=255), nullable=False),
     sa.Column('is_active', sa.Boolean(), nullable=True),
-    sa.PrimaryKeyConstraint('guid', name=op.f('pk_auth_user'))
+    sa.Column('forgot_password_token', sa.String(length=255), nullable=True),
+    sa.Column('forgot_password_expire', sa.DateTime(), nullable=True),
+    sa.PrimaryKeyConstraint('guid', name=op.f('pk_auth_user')),
+    sa.UniqueConstraint('forgot_password_token', name=op.f('uq_auth_user_forgot_password_token'))
     )
     op.create_table('auth_session',
     sa.Column('token', sa.String(length=255), nullable=False),

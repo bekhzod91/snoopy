@@ -55,3 +55,4 @@ def load_fixtures(fixtures: list[str], loader=YamlLoader):
                 setattr(instance, pk_field_name, pk)
 
                 db.session.add(instance)
+    db.session.commit()

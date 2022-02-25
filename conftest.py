@@ -1,20 +1,25 @@
 import pytest
-
+from contextlib import contextmanager
 from snoopy.core import create_app
 from snoopy.core import db
+from flask import Flask
 from flask_migrate import upgrade
+from flask_sqlalchemy import SQLAlchemy
 
-app = create_app()
+
+@pytest.fixture(name="app")
+def flask_app():
+    yield create_app()
 
 
 @pytest.fixture
-def client():
+def client(app: "Flask"):
     with app.test_client() as client:
         yield client
 
 
 @pytest.fixture(name="db")
-def database():
+def database(app: "Flask"):
     with app.app_context():
         # Alembic upgrade head
         db.drop_all()

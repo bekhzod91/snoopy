@@ -13,9 +13,9 @@ paths:
   /api/v1/sign-in/:
     post:
       summary: Create new token for authorization.
+      operationId: createToken
       tags:
         - Authentication
-      operationId: createToken
       responses:
         "200":
           description: Successful
@@ -58,6 +58,54 @@ paths:
           application/json:
             schema:
               $ref: "schemas/SignOutRequestDTO.yaml"
+  /api/v1/forgot-password/:
+    post:
+      summary: Recovery person password.
+      operationId: forgotPassword
+      tags:
+        - Authentication
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/ForgotPasswordResponseDTO.yaml"
+        "400":
+          description: Fail
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/ErrorDTO.yaml"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "schemas/ForgotPasswordRequestDTO.yaml"
+  /api/v1/forgot-password/confirm/:
+    post:
+      summary: Confirm forgot password.
+      operationId: forgotPasswordConfirm
+      tags:
+        - Authentication
+      responses:
+        "200":
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/ForgotPasswordConfirmResponseDTO.yaml"
+        "400":
+          description: Fail
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/ErrorDTO.yaml"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "schemas/ForgotPasswordConfirmRequestDTO.yaml"
 components:
   securitySchemes:
     Token:

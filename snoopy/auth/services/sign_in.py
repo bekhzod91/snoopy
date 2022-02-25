@@ -6,7 +6,7 @@ from ..models.session import Session
 from ..models.user import User
 from ..exceptions import InvalidCredential
 
-from schemes import SignInRequestDTO, SignInResponseDTO
+from schemas import SignInRequestDTO, SignInResponseDTO
 
 
 class SignInService(object):
@@ -19,7 +19,7 @@ class SignInService(object):
     def get_user_by_credential(username: str, password: str):
         user = User.query.filter_by(username=username).first()
 
-        if not user or not user.password_verify(password):
+        if not user or not user.password_verify(password.strip()):
             raise InvalidCredential
 
         return user
@@ -36,6 +36,7 @@ class SignInService(object):
         )
 
         db.session.add(session)
+        db.session.commit()
 
         return session.token
 
