@@ -1,6 +1,7 @@
 import re
 import secrets
 import datetime
+from datetime import timedelta
 
 from flask import current_app as app
 from flask import render_template
@@ -41,7 +42,7 @@ class ForgotPasswordService(object):
 
         if user:
             user.forgot_password_token = token
-            user.forgot_password_expire = datetime.datetime.utcnow()
+            user.forgot_password_expire = datetime.datetime.utcnow() + timedelta(hours=2)
             db.session.commit()
             ForgotPasswordService.send_email_to_user(user)
 
